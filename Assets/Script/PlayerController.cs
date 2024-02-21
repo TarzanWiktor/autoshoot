@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,15 +14,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
 
         
-        Vector3 movement = Vector3.right * x * Time.deltaTime;
+        Vector3 movement = Vector3.right * x ;
 
-        movement += Vector3.forward * y * Time.deltaTime;
+        movement += Vector3.forward * y ;
 
         movement = movement.normalized;
+
+        movement *= Time.deltaTime;
 
         movement *= moveSpeed;
 

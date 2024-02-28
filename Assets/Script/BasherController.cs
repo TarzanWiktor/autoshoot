@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class BasherController : MonoBehaviour
 {
-    GameObject Player;
+    //gracz
+    GameObject player;
+    //prędkość podążania za graczem
+    public float walkSpeed;
 
-    public float walkSpeed = 1;
     // Start is called before the first frame update
     void Start()
     {
-        Player = GameObject.FindGameObjectWithTag("Player");
+        walkSpeed = 3;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(Player.transform.position);
-
+        //patrz się na gracza
+        transform.LookAt(player.transform.position);
+        //idz do przodu
         transform.position += transform.forward * Time.deltaTime * walkSpeed;
-        
     }
 }

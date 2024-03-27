@@ -15,10 +15,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
 
-        
-        Vector3 movement = Vector3.right * x ;
+        Vector3 movement = Vector3.right * x;
+
+
+        float y = Input.GetAxisRaw("Vertical");
 
         movement += Vector3.forward * y ;
 
@@ -29,5 +30,17 @@ public class PlayerController : MonoBehaviour
         movement *= moveSpeed;
 
         transform.position += movement;
+    }
+
+    public void Hit(GameObject other)
+    {
+        Debug.Log("Gracz trafiony");
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Gracz trafiony");
+        }
     }
 }

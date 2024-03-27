@@ -9,10 +9,24 @@ public class WeaponController : MonoBehaviour
     public float range = 10f;
 
     Transform player;
+
+    public GameObject projectilePrefab;
+
+    Transform projectileSpawn;
+
+    public float rateOfFire = 1;
+
+    float timeSinceLastFire = 0;
+
+    public float projectileForce = 20;
+
+
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+
+        projectileSpawn = transform.Find("ProjectileSpawn").transform;
     }
 
     // Update is called once per frame
@@ -21,8 +35,27 @@ public class WeaponController : MonoBehaviour
         Transform target = TagTargeter("Enemy");
         if(target != transform)
         {
-            Debug.Log(target.gameObject.name);
-            transform.LookAt(target.position + Vector3.up);
+            //sworz target w miecu celu ale na wysokosci wierzyczki
+            Vector3 newTarget = new Vector3(target.position.x, projectileSpawn.position.y, target.position.z);
+            // Debug.Log(target.gameObject.name);
+            transform.LookAt(newTarget);
+
+            if(timeSinceLastFire > rateOfFire)
+            {
+                GameObject projectile = Instantiate(projectilePrefab, projectileSpawn.position, Quaternion.identity);
+
+
+                Rigidbody projectileRB = projectile.GetComponent<Rigidbody>();
+
+                projectileRB.AddForce(projectileSpawn.transform.forward * projectileForce, ForceMode.VelocityChange);
+
+                timeSinceLastFire = 0;
+
+                Destroy(projectile, 5);
+            } else
+            {
+                timeSinceLastFire += Time.deltaTime;
+            }
         }
     }
 
@@ -71,7 +104,7 @@ public class WeaponController : MonoBehaviour
                 {
                     Vector3 diference = player.position - enemy.transform.position;
 
-    float distance = diference.magnitude;
+                    float distance = diference.magnitude;
                     if (distance<targetDistance)
                     {
                         target = enemy.transform;

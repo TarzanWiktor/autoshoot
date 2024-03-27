@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
 
     public GameObject basherPrefab;
 
-    public float spawnInterval = 1;
+    public float spawnInterval = 0.3f;
 
     float spawnDistance = 20;
 
@@ -20,6 +20,8 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+
+        timeSinceSpawn = 0;
     }
 
     // Update is called once per frame
@@ -40,7 +42,7 @@ public class LevelManager : MonoBehaviour
 
             randomPosition += player.position;
 
-            if(Physics.CheckSphere(new Vector3(randomPosition.x, 1, randomPosition.z), 0.5f))
+            if(!Physics.CheckSphere(new Vector3(randomPosition.x, 1, randomPosition.z), 0.5f))
             {
                 Instantiate(basherPrefab, randomPosition, Quaternion.identity);
 

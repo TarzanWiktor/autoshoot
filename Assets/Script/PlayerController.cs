@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxisRaw("Horizontal");
+        /*float x = Input.GetAxisRaw("Horizontal");
 
         Vector3 movement = Vector3.right * x;
 
@@ -27,9 +27,18 @@ public class PlayerController : MonoBehaviour
 
         movement *= Time.deltaTime;
 
-        movement *= moveSpeed;
+        movement *= moveSpeed;*/
 
-        transform.position += movement;
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+
+        Vector3 targetDirection = new Vector3(x, 0, y);
+        Vector3 targetPosition = transform.position + targetDirection;
+        if (targetDirection.magnitude > Mathf.Epsilon)
+        {
+            transform.LookAt(targetPosition);
+            transform.position += transform.forward * Time.deltaTime * moveSpeed;
+        }
     }
 
     public void Hit(GameObject other)
@@ -41,6 +50,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Gracz trafiony");
+            GameObject.Find("LevelManager").GetComponent<LevelManager>().GameOver();
         }
     }
 }

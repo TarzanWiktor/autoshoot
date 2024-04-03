@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +17,16 @@ public class LevelManager : MonoBehaviour
     float spawnDistance = 20;
 
     float timeSinceSpawn;
+
+    int points = 0;
+
+    public GameObject pointsCounter;
+
+    public GameObject timeCounter;
+
+    public GameObject gameOverScreen;
+
+    public float levelTime = 60f;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,7 +47,6 @@ public class LevelManager : MonoBehaviour
             Vector3 randomPosition = new Vector3(random.x, 0, random.y);
 
 
-            // Vector3 randomPosition = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
 
             randomPosition *= spawnDistance;
 
@@ -51,8 +61,44 @@ public class LevelManager : MonoBehaviour
 
 
         }
-        
-        //TODO: opracowaæ sposób na przyspieszenie spawnu w nieskoñczonoœæ
+
+        if (levelTime < 0)
+        {
+            GameOver();
+        }
+        else
+        {
+            levelTime -= Time.deltaTime;
+            UpdateUI();
+        }
 
     }
+    public void AddPoints(int amount)
+    {
+        points += amount;
+    }
+    private void UpdateUI()
+    {
+        pointsCounter.GetComponent<TextMeshProUGUI>().text = "Punkty: " + points.ToString();
+        timeCounter.GetComponent<TextMeshProUGUI>().text = Mathf.Floor(levelTime).ToString();
+    }
+    public void GameOver()
+    {
+        player.GetComponent<PlayerController>().enabled = false;
+        player.transform.Find("MainTurret").GetComponent<WeaponController>().enabled = false;
+
+        GameObject[] enemyList = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject basher in enemyList)
+        {
+            basher.GetComponent<BasherController>().enabled = false;
+        }
+
+        gameOverScreen.transform.Find("FinalScoreText").GetComponent<TextMeshProUGUI>().text = "Wynik koñcowy: " + points.ToString();
+
+        gameOverScreen.SetActive(true);
+
+    }
+
+
 }
+

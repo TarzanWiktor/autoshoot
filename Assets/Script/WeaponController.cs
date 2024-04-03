@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 public class WeaponController : MonoBehaviour
 {
 
-    public float range = 10f;
+    public float range = 15f;
 
     Transform player;
 

@@ -117,7 +117,7 @@ public class WeaponController : MonoBehaviour
         }
 
         // Debug.Log("Iloœæ colliderów w zasiêgu broni: " + collidersInRange.Length);
-        Debug.Log("Celuje do:" + target.gameObject.name);
+        // Debug.Log("Celuje do:" + target.gameObject.name);
     return target;
     }
 }
